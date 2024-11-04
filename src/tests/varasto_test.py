@@ -68,3 +68,6 @@ class TestVarasto(unittest.TestCase):
     def test_alku_saldo(self):
         varasto = Varasto(10, alku_saldo=-1)
         self.assertAlmostEqual(varasto.saldo, 0)
+    
+    def test_joujou(self):
+        pass
