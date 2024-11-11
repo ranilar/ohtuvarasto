@@ -33,5 +33,5 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Lint
-        run: pylint src
+        run: poetry pylint src
              pylint --version
