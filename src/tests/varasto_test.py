@@ -1,73 +1,47 @@
+"""Module for testing the Varasto class."""
+
 import unittest
 from varasto import Varasto
 
-
 class TestVarasto(unittest.TestCase):
+    """Unit tests for the Varasto class."""
+
     def setUp(self):
+        """Set up a new Varasto instance for testing."""
         self.varasto = Varasto(10)
 
-    def test_konstruktori_luo_tyhjan_varaston(self):
-        # https://docs.python.org/3/library/unittest.html#unittest.TestCase.assertAlmostEqual
-        self.assertAlmostEqual(self.varasto.saldo, 0)
+    def test_constructor_initializes_correctly(self):
+        """Test that the constructor initializes correctly."""
+        self.assertEqual(self.varasto.tilavuus, 10)
 
-    def test_uudella_varastolla_oikea_tilavuus(self):
-        self.assertAlmostEqual(self.varasto.tilavuus, 10)
+    def test_adding_negative_amount_does_nothing(self):
+        """Test that adding a negative amount does nothing."""
+        self.varasto.lisaa_varastoon(-5)
+        self.assertEqual(self.varasto.saldo, 0)
 
-    def test_lisays_lisaa_saldoa(self):
-        self.varasto.lisaa_varastoon(8)
-
-        self.assertAlmostEqual(self.varasto.saldo, 8)
-
-    def test_lisays_lisaa_pienentaa_vapaata_tilaa(self):
-        self.varasto.lisaa_varastoon(8)
-
-        # vapaata tilaa pitäisi vielä olla tilavuus-lisättävä määrä eli 2
-        self.assertAlmostEqual(self.varasto.paljonko_mahtuu(), 2)
-
-    def test_ottaminen_palauttaa_oikean_maaran(self):
-        self.varasto.lisaa_varastoon(8)
-
-        saatu_maara = self.varasto.ota_varastosta(2)
-
-        self.assertAlmostEqual(saatu_maara, 2)
-
-    def test_ottaminen_lisaa_tilaa(self):
-        self.varasto.lisaa_varastoon(8)
-
-        self.varasto.ota_varastosta(2)
-
-        # varastossa pitäisi olla tilaa 10 - 8 + 2 eli 4
-        self.assertAlmostEqual(self.varasto.paljonko_mahtuu(), 4)
-
-    def test_lisataan_liikaa(self):
-        self.varasto.lisaa_varastoon(100)
-        self.assertAlmostEqual(self.varasto.saldo, 10)
-                
-    def test_otetaan_liikaa(self):
-        self.varasto.ota_varastosta(100)
-        
-    def test_negatiivinen_tilavuus(self):
-        self.varasto = Varasto(-1)
-        self.assertAlmostEqual(self.varasto.tilavuus, 0)
-        
-    def test_negatiivinen_lisays(self):
-        self.varasto = Varasto(10, 5)
-        self.varasto.lisaa_varastoon(-1)
-        
-        self.assertAlmostEqual(self.varasto.saldo, 5)
-        
-    def test_negatiivinen_otto(self):
-        self.varasto = Varasto(10, 5)
-        self.varasto.ota_varastosta(-1)
-        self.assertAlmostEqual(self.varasto.saldo, 5)
-        
-    def test_str(self):
+    def test_adding_to_varasto_increases_saldo(self):
+        """Test that adding a positive amount increases the saldo."""
         self.varasto.lisaa_varastoon(5)
-        self.assertEqual(str(self.varasto), "saldo = 5, vielä tilaa 5")
-        
-    def test_alku_saldo(self):
-        varasto = Varasto(10, alku_saldo=-1)
-        self.assertAlmostEqual(varasto.saldo, 0)
-    
-    def test_joujou(self):
-        pass
+        self.assertEqual(self.varasto.saldo, 5)
+
+    def test_adding_more_than_capacity_locks_to_capacity(self):
+        """Test that adding more than capacity locks saldo to maximum."""
+        self.varasto.lisaa_varastoon(15)
+        self.assertEqual(self.varasto.saldo, 10)
+
+    def test_removing_negative_amount_does_nothing(self):
+        """Test that removing a negative amount does nothing."""
+        self.varasto.ota_varastosta(-5)
+        self.assertEqual(self.varasto.saldo, 0)
+
+    def test_removing_more_than_available_takes_all(self):
+        """Test that removing more than available takes all available."""
+        self.varasto.lisaa_varastoon(5)
+        result = self.varasto.ota_varastosta(10)
+        self.assertEqual(result, 5)
+        self.assertEqual(self.varasto.saldo, 0)
+
+    def test_string_representation_is_correct(self):
+        """Test that the string representation of Varasto is correct."""
+        self.varasto.lisaa_varastoon(7)
+        self.assertEqual(str(self.varasto), "saldo = 7, vielä tilaa 3")

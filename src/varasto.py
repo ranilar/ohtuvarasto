@@ -1,5 +1,9 @@
+"""Varasto module"""
+
 class Varasto:
+    """Varasto class"""
     def __init__(self, tilavuus, alku_saldo = 0):
+        """Initalize Varasto"""
         if tilavuus > 0.0:
             self.tilavuus = tilavuus
         else:
@@ -18,9 +22,11 @@ class Varasto:
 
     # huom: ominaisuus voidaan myös laskea. Ei tarvita erillistä kenttää viela_tilaa tms.
     def paljonko_mahtuu(self):
+        """Check how much fits into the container"""
         return self.tilavuus - self.saldo
 
     def lisaa_varastoon(self, maara):
+        """Add to container"""
         if maara < 0:
             return
         if maara <= self.paljonko_mahtuu():
@@ -29,6 +35,7 @@ class Varasto:
             self.saldo = self.tilavuus
 
     def ota_varastosta(self, maara):
+        """Take from cotainer"""
         if maara < 0:
             return 0.0
         if maara > self.saldo:
@@ -42,4 +49,6 @@ class Varasto:
         return maara
 
     def __str__(self):
+        """Return amount of sald and space left"""
         return f"saldo = {self.saldo}, vielä tilaa {self.paljonko_mahtuu()}"
+    

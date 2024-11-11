@@ -1,7 +1,10 @@
+"""Test module"""
+
 from varasto import Varasto
 
 
 def main():
+    """Test main function"""
     mehua = Varasto(100.0)
     olutta = Varasto(100.0, 20.2)
 
