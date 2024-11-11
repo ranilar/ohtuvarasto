@@ -22,6 +22,8 @@ jobs:
         run: poetry install
       - name: Run tests
         run: poetry run coverage run --branch -m pytest
+      - name: Install pylint
+        run: poetry add pylint
         
       - name: Coverage report
         run: poetry run coverage xml
@@ -32,3 +34,4 @@ jobs:
 
       - name: Lint
         run: pylint src
+             pylint --version
